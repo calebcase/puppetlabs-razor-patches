@@ -1,0 +1,68 @@
+Automatically download the source if it is missing and save it.
+
+Add the puppet parameter 'url'. If the source path doesn't exist and url is
+set, then the image will be downloaded and saved to the path.
+---
+ lib/puppet/provider/rz_image/default.rb |    7 ++++++-
+ lib/puppet/type/rz_image.rb             |    7 +++++++
+ manifests/init.pp                       |    3 ++-
+ 3 files changed, 15 insertions(+), 2 deletions(-)
+
+diff --git a/lib/puppet/provider/rz_image/default.rb b/lib/puppet/provider/rz_image/default.rb
+index 556d1a0..c807d94 100644
+--- a/lib/puppet/provider/rz_image/default.rb
++++ b/lib/puppet/provider/rz_image/default.rb
+@@ -46,7 +46,8 @@ Puppet::Type.type(:rz_image).provide(:default) do
+   end
+ 
+   def download(source, target)
+-    Puppet.notice("Downloading rz_image from #{source} ...")
++    Puppet.notice("Downloading rz_image from #{source} to #{target} ...")
++    FileUtils.mkdir_p(File.dirname(target))
+     curl '-L', source, '-a', '-o', target
+   end
+ 
+@@ -61,7 +62,11 @@ Puppet::Type.type(:rz_image).provide(:default) do
+         download(resource[:source], source)
+       else
+         source = resource[:source]
++        if not File.file?(source)
++          download(resource[:url], source)
++        end
+       end
++
+       case resource[:type]
+       when :os
+         Puppet.debug "razor image add -t #{resource[:type]} -p #{resource[:source]} -n #{resource[:name]} -v #{resource[:version]}"
+diff --git a/lib/puppet/type/rz_image.rb b/lib/puppet/type/rz_image.rb
+index ac0fa9d..256f9c9 100644
+--- a/lib/puppet/type/rz_image.rb
++++ b/lib/puppet/type/rz_image.rb
+@@ -21,6 +21,13 @@ EOT
+     end
+   end
+ 
++  newparam(:url) do
++    desc "The image source url. If source and url are provided the image will be downloaded to the source location if it is missing."
++    validate do |value|
++      raise Puppet::Error, "only support http(s) url" unless value =~ /^(http:|https:)/
++    end
++  end
++
+   newproperty(:version) do
+     desc "The image version. The value is automatically detected for mk and esx."
+     newvalues(/[A-Za-z0-9]/)
+diff --git a/manifests/init.pp b/manifests/init.pp
+index cb34198..8b95d98 100644
+--- a/manifests/init.pp
++++ b/manifests/init.pp
+@@ -151,7 +151,8 @@ class razor (
+   rz_image { $mk_name:
+     ensure  => present,
+     type    => 'mk',
+-    source  => $mk_source,
++    source  => "${directory}/${mk_name}",
++    url     => $mk_source,
+     require => [
+       File['/usr/bin/razor'],
+       Package['curl'],
