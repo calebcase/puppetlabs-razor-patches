@@ -7,7 +7,7 @@ isn't even available for download.
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/manifests/init.pp b/manifests/init.pp
-index 8b95d98..82ccbce 100644
+index 8b95d98..f38e77c 100644
 --- a/manifests/init.pp
 +++ b/manifests/init.pp
 @@ -40,8 +40,8 @@ class razor (
@@ -17,7 +17,7 @@ index 8b95d98..82ccbce 100644
 -  $mk_name             = 'rz_mk_prod-image.0.11.0.iso',
 -  $mk_source           = 'https://downloads.puppetlabs.com/razor/iso/rz_mk_prod-image.0.11.0.iso',
 +  $mk_name             = 'razor-microkernel-latest.iso',
-+  $mk_source           = 'https://downloads.puppetlabs.com/razor/iso/razor-microkernel-latest.iso',
++  $mk_source           = 'https://downloads.puppetlabs.com/razor/iso/prod/razor-microkernel-latest.iso',
    $git_source          = 'http://github.com/puppetlabs/Razor.git',
    $git_revision        = 'master'
  ) {
