@@ -1,7 +1,14 @@
-Automatically download the source if it is missing and save it.
+Automatic image download for local images.
 
-Add the puppet parameter 'url'. If the source path doesn't exist and url is
-set, then the image will be downloaded and saved to the path.
+This adds the parameter 'url' to rz_image. If the source path doesn't exist
+and url is set, then the image will be downloaded and saved to the path. This
+eases the automatic setup of Razor installations and reduces the network
+traffic load caused by large setups.
+
+By providing the url as an additional parameter it is possible for users to
+control where local images are stored and still have them automatically
+downloaded. It is important for users to have control over this path as it may
+be highly specialized for their environment.
 ---
  lib/puppet/provider/rz_image/default.rb |    7 ++++++-
  lib/puppet/type/rz_image.rb             |    4 ++++

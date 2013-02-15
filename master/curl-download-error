@@ -1,4 +1,10 @@
 Make download fail on HTTP error.
+
+Enable curl error reporting on HTTP errors. Without this flag curl can
+silently fail to download an image and will result in an html file (instead of
+the expected ISO). Users currently get no notification of this and instead
+find that their systems won't properly netboot with VirtualBox indicating that
+the VM has attempted an invalid op.
 ---
  lib/puppet/provider/rz_image/default.rb |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
