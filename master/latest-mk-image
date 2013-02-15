@@ -1,3 +1,7 @@
+Use the latest mk by default.
+
+Rather than using a specific version. In this case, the version specified
+isn't even available for download.
 ---
  manifests/init.pp |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)

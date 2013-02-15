@@ -1,3 +1,4 @@
+Make download fail on HTTP error.
 ---
  lib/puppet/provider/rz_image/default.rb |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
